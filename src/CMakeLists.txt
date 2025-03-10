@@ -1,5 +1,5 @@
 set(header_path "${${PROJECT_NAME}_SOURCE_DIR}/include")
-set(headers
+set(header
     ${header_path}/circle.h
     ${header_path}/tasks.h)
 set(src circle.cpp tasks.cpp)
