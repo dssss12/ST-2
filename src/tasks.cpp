@@ -1,3 +1,4 @@
+// Copyright 2025 Sorochkin
 #include "tasks.h"
 #include "circle.h"
 
