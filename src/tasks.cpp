@@ -1,18 +1,38 @@
-// Copyright 2025 Sorochkin
+// Copyright 2025 Sotskov Andrey
+
 #include "tasks.h"
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
 #include "circle.h"
 
-double calculateRopeGap() {
-    Circle earth(6378100); // Радиус в метрах
-    earth.setFerence(earth.getFerence() + 1);
-    return earth.getRadius() - 6378100;
+const double PI = 3.141592653589793;
+
+double ropeGap(double earthRadius) {
+    if (earthRadius < 0) {
+        return 1 / (2 * PI);
+    }
+
+    Circle earth(std::max(earthRadius, 0.0));
+    double oldFerence = earth.getFerence();
+    double newFerence = oldFerence + 1;
+    earth.setFerence(newFerence);
+
+    return earth.getRadius() - earthRadius;
 }
 
-double calculatePoolCost() {
-    Circle pool(3);
-    Circle walkway(4);
-    double walkwayArea = walkway.getArea() - pool.getArea();
-    double fenceCost = walkway.getFerence() * 2000;
-    double concreteCost = walkwayArea * 1000;
-    return fenceCost + concreteCost;
+double poolCost(double poolRadius, double pathWidth, double concreteCost,
+                double fenceCost) {
+    if (poolRadius < 0 || pathWidth < 0) {
+        return 0;
+    }
+
+    Circle pool(std::max(poolRadius, 0.0));
+    Circle outer(poolRadius + pathWidth);
+
+    double totalConcreteCost = (outer.getArea() - pool.getArea()) *
+                               concreteCost;
+    double totalFenceCost = outer.getFerence() * fenceCost;
+
+    return totalConcreteCost + totalFenceCost;
 }
